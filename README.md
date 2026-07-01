@@ -74,3 +74,4 @@ Las capas `config` y `security` son transversales a las tres anteriores.
 
 
 ### 4. Diagrama de contexto
+![diagrama de contexto.png](docs/Diagrama%20de%20contexto/diagrama%20de%20contexto.png)
