@@ -76,4 +76,9 @@ public class PokemonServiceImpl implements PokemonService {
         }
         return pokemonPort.findAll(Pageable.unpaged()).getContent();
     }
+
+    @Override
+    public List<Pokemon> search(String query) {
+        return pokemonPort.searchByNameOrNumber(query);
+    }
 }

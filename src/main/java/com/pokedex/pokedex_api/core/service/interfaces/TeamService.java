@@ -17,4 +17,11 @@ public interface TeamService {
     Team removePokemon(Long teamId, Long pokemonId);
 
     void delete(Long id);
+
+    /**
+     * Análisis competitivo básico (RF-15): cobertura de tipos del equipo.
+     * Devuelve un resumen legible; el detalle completo de matriz de
+     * efectividad se deja como evolución futura del endpoint.
+     */
+    String analyzeTeam(Long teamId);
 }

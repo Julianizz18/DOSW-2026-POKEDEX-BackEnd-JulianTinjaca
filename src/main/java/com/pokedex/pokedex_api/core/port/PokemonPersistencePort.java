@@ -25,6 +25,8 @@ public interface PokemonPersistencePort {
 
     List<Pokemon> findByRegion(String regionName);
 
+    List<Pokemon> searchByNameOrNumber(String query);
+
     Pokemon save(Pokemon pokemon);
 
     void deleteById(Long id);

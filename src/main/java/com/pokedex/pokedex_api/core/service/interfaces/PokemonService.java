@@ -22,4 +22,6 @@ public interface PokemonService {
     void delete(Long id);
 
     List<Pokemon> filterByCriteria(PokemonFilterCriteria criteria);
+
+    List<Pokemon> search(String query);
 }
