@@ -29,7 +29,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
         excludeAutoConfiguration = OAuth2ClientAutoConfiguration.class,
         excludeFilters = @ComponentScan.Filter(
                 type = FilterType.REGEX,
-                pattern = "com.pokedex.pokedex_api.security..*"))
+                pattern = {
+                        "com.pokedex.pokedex_api.security..*",
+                        "com.pokedex.pokedex_api.config..*"
+                }))
 @AutoConfigureMockMvc(addFilters = false)
 class PokemonControllerTest {
 
