@@ -17,6 +17,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -64,7 +65,7 @@ public class PokemonPersistenceAdapter implements PokemonPersistencePort {
     public Pokemon save(Pokemon pokemon) {
         PokemonEntity existing = pokemon.getId() != null
                 ? pokemonRepository.findById(pokemon.getId())
-                        .orElseThrow(() -> new ResourceNotFoundException("Pokemon", "id", pokemon.getId()))
+                  .orElseThrow(() -> new ResourceNotFoundException("Pokemon", "id", pokemon.getId()))
                 : null;
 
         List<TypeEntity> types = resolveTypes(pokemon.getTypes());
@@ -113,11 +114,11 @@ public class PokemonPersistenceAdapter implements PokemonPersistencePort {
     }
 
     private List<TypeEntity> resolveTypes(List<String> typeNames) {
-        if (typeNames == null || typeNames.isEmpty()) return List.of();
-        return typeNames.stream()
+        if (typeNames == null || typeNames.isEmpty()) return new ArrayList<>();
+        return new ArrayList<>(typeNames.stream()
                 .map(name -> typeRepository.findByName(name)
                         .orElseGet(() -> typeRepository.save(TypeEntity.builder().name(name).build())))
-                .toList();
+                .toList());
     }
 
     private RegionEntity resolveRegion(String regionName) {
