@@ -9,6 +9,7 @@ import com.pokedex.pokedex_api.persistence.entity.relational.RegionEntity;
 import com.pokedex.pokedex_api.persistence.entity.relational.TypeEntity;
 import com.pokedex.pokedex_api.persistence.mapper.PokemonPersistenceMapper;
 import com.pokedex.pokedex_api.persistence.repository.relational.PokemonJpaRepository;
+import com.pokedex.pokedex_api.persistence.repository.relational.PokemonStatsJpaRepository;
 import com.pokedex.pokedex_api.persistence.repository.relational.RegionJpaRepository;
 import com.pokedex.pokedex_api.persistence.repository.relational.TypeJpaRepository;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +27,7 @@ import java.util.Optional;
 public class PokemonPersistenceAdapter implements PokemonPersistencePort {
 
     private final PokemonJpaRepository pokemonRepository;
+    private final PokemonStatsJpaRepository statsRepository;
     private final TypeJpaRepository typeRepository;
     private final RegionJpaRepository regionRepository;
     private final PokemonPersistenceMapper mapper;
@@ -88,11 +90,20 @@ public class PokemonPersistenceAdapter implements PokemonPersistencePort {
                     .build();
         }
 
+        // Guardamos primero el Pokemon (sin stats). Necesitamos su id generado
+        // para asignarlo como FK en la tabla pokemon_stats.
         PokemonEntity saved = pokemonRepository.save(toSave);
 
         if (pokemon.getStats() != null) {
+            // Los stats son el LADO DUEÑO de la relación (tienen el @JoinColumn),
+            // por eso se guardan por su propio repositorio en vez de por cascada.
+            // Si ya existían (update), se reutiliza su id para no duplicar fila.
+            Long existingStatsId = statsRepository.findByPokemonId(saved.getId())
+                    .map(PokemonStatsEntity::getId)
+                    .orElse(null);
+
             PokemonStatsEntity statsEntity = PokemonStatsEntity.builder()
-                    .id(saved.getStats() != null ? saved.getStats().getId() : null)
+                    .id(existingStatsId)
                     .hp(pokemon.getStats().getHp())
                     .attack(pokemon.getStats().getAttack())
                     .defense(pokemon.getStats().getDefense())
@@ -101,8 +112,7 @@ public class PokemonPersistenceAdapter implements PokemonPersistencePort {
                     .speed(pokemon.getStats().getSpeed())
                     .pokemon(saved)
                     .build();
-            saved = saved.toBuilder().stats(statsEntity).build();
-            saved = pokemonRepository.save(saved);
+            statsRepository.save(statsEntity);
         }
 
         return mapper.toDomain(pokemonRepository.findWithDetailsById(saved.getId()).orElseThrow());
