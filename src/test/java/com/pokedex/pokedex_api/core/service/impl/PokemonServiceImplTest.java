@@ -3,6 +3,7 @@ package com.pokedex.pokedex_api.core.service.impl;
 import com.pokedex.pokedex_api.core.exception.DuplicateResourceException;
 import com.pokedex.pokedex_api.core.exception.ResourceNotFoundException;
 import com.pokedex.pokedex_api.core.model.Pokemon;
+import com.pokedex.pokedex_api.core.model.PokemonFilterCriteria;
 import com.pokedex.pokedex_api.core.model.PokemonStats;
 import com.pokedex.pokedex_api.core.port.PokemonPersistencePort;
 import org.junit.jupiter.api.BeforeEach;
@@ -12,6 +13,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 import java.util.Optional;
@@ -91,5 +95,84 @@ class PokemonServiceImplTest {
 
         assertThrows(ResourceNotFoundException.class, () -> service.delete(99L));
         verify(pokemonPort, never()).deleteById(any());
+    }
+
+    @Test
+    @DisplayName("delete: debe eliminar cuando el Pokemon existe")
+    void delete_whenExists_deletes() {
+        when(pokemonPort.findById(1L)).thenReturn(Optional.of(pikachu));
+
+        service.delete(1L);
+
+        verify(pokemonPort).deleteById(1L);
+    }
+
+    @Test
+    @DisplayName("findAll: debe delegar en el puerto")
+    void findAll_delegatesToPort() {
+        Page<Pokemon> page = new PageImpl<>(List.of(pikachu));
+        when(pokemonPort.findAll(any(Pageable.class))).thenReturn(page);
+
+        Page<Pokemon> result = service.findAll(Pageable.unpaged());
+
+        assertThat(result.getContent()).containsExactly(pikachu);
+    }
+
+    @Test
+    @DisplayName("findByNationalNumber: debe retornar el Pokemon cuando existe")
+    void findByNationalNumber_whenExists_returnsPokemon() {
+        when(pokemonPort.findByNationalNumber(25)).thenReturn(Optional.of(pikachu));
+
+        assertThat(service.findByNationalNumber(25)).isEqualTo(pikachu);
+    }
+
+    @Test
+    @DisplayName("findByNationalNumber: debe lanzar ResourceNotFoundException cuando no existe")
+    void findByNationalNumber_whenNotFound_throws() {
+        when(pokemonPort.findByNationalNumber(999)).thenReturn(Optional.empty());
+
+        assertThrows(ResourceNotFoundException.class, () -> service.findByNationalNumber(999));
+    }
+
+    @Test
+    @DisplayName("update: debe combinar los cambios sobre el Pokemon existente")
+    void update_whenExists_mergesChanges() {
+        when(pokemonPort.findById(1L)).thenReturn(Optional.of(pikachu));
+        when(pokemonPort.save(any())).thenAnswer(inv -> inv.getArgument(0));
+
+        Pokemon changes = Pokemon.builder().name("Raichu").description("evolucionado")
+                .types(List.of("Electric")).generation(1).hasMega(false).build();
+
+        Pokemon result = service.update(1L, changes);
+
+        assertThat(result.getName()).isEqualTo("Raichu");
+        assertThat(result.getId()).isEqualTo(1L);
+    }
+
+    @Test
+    @DisplayName("filterByCriteria: cuando hay region, debe delegar en findByRegion")
+    void filterByCriteria_withRegion_delegatesToFindByRegion() {
+        when(pokemonPort.findByRegion("Kanto")).thenReturn(List.of(pikachu));
+        PokemonFilterCriteria criteria = new PokemonFilterCriteria(null, "Kanto", null, null);
+
+        assertThat(service.filterByCriteria(criteria)).containsExactly(pikachu);
+    }
+
+    @Test
+    @DisplayName("filterByCriteria: sin region, debe retornar todo el catalogo")
+    void filterByCriteria_withoutRegion_returnsAll() {
+        Page<Pokemon> page = new PageImpl<>(List.of(pikachu));
+        when(pokemonPort.findAll(any(Pageable.class))).thenReturn(page);
+        PokemonFilterCriteria criteria = new PokemonFilterCriteria(null, null, null, null);
+
+        assertThat(service.filterByCriteria(criteria)).containsExactly(pikachu);
+    }
+
+    @Test
+    @DisplayName("search: debe delegar en el puerto")
+    void search_delegatesToPort() {
+        when(pokemonPort.searchByNameOrNumber("pika")).thenReturn(List.of(pikachu));
+
+        assertThat(service.search("pika")).containsExactly(pikachu);
     }
 }

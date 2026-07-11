@@ -1,0 +1,63 @@
+<mxfile host="app.diagrams.net" agent="Claude" version="24.7.17" type="device">
+  <diagram id="contexto-pokedex" name="Diagrama de Contexto">
+    <mxGraphModel dx="1400" dy="900" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1200" pageHeight="800" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <mxCell id="sistema" value="Pokedex API&lt;br&gt;&lt;i&gt;Sistema backend (Spring Boot 21)&lt;/i&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontStyle=1;fontSize=16;" vertex="1" parent="1">
+          <mxGeometry x="480" y="320" width="280" height="140" as="geometry" />
+        </mxCell>
+
+        <mxCell id="visitante" value="Visitante&lt;br&gt;(sin cuenta)" style="shape=umlActor;verticalLabelPosition=bottom;labelBackgroundColor=#ffffff;verticalAlign=top;html=1;outlineConnect=0;" vertex="1" parent="1">
+          <mxGeometry x="80" y="80" width="50" height="80" as="geometry" />
+        </mxCell>
+
+        <mxCell id="entrenador" value="Entrenador&lt;br&gt;(registro propio o Google)" style="shape=umlActor;verticalLabelPosition=bottom;labelBackgroundColor=#ffffff;verticalAlign=top;html=1;outlineConnect=0;" vertex="1" parent="1">
+          <mxGeometry x="80" y="350" width="50" height="80" as="geometry" />
+        </mxCell>
+
+        <mxCell id="admin" value="Administrador" style="shape=umlActor;verticalLabelPosition=bottom;labelBackgroundColor=#ffffff;verticalAlign=top;html=1;outlineConnect=0;" vertex="1" parent="1">
+          <mxGeometry x="80" y="600" width="50" height="80" as="geometry" />
+        </mxCell>
+
+        <mxCell id="google" value="Google OAuth2&lt;br&gt;(Identity Provider)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1">
+          <mxGeometry x="920" y="100" width="220" height="80" as="geometry" />
+        </mxCell>
+
+        <mxCell id="postgres" value="PostgreSQL&lt;br&gt;(catalogo, usuarios, equipos, favoritos)" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1">
+          <mxGeometry x="920" y="320" width="220" height="100" as="geometry" />
+        </mxCell>
+
+        <mxCell id="mongo" value="MongoDB&lt;br&gt;(estadisticas de uso)" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1">
+          <mxGeometry x="920" y="560" width="220" height="100" as="geometry" />
+        </mxCell>
+
+        <mxCell id="e1" value="Consulta catalogo publico&lt;br&gt;GET /v1/pokemon/**" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=open;endFill=1;exitX=1;exitY=0.5;entryX=0;entryY=0.25;" edge="1" parent="1" source="visitante" target="sistema">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="e2" value="Login (JWT / Google), favoritos, equipos" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=open;endFill=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" edge="1" parent="1" source="entrenador" target="sistema">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="e3" value="CRUD de Pokemon, gestion (rol ADMIN)" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=open;endFill=1;exitX=1;exitY=0.5;entryX=0;entryY=0.75;" edge="1" parent="1" source="admin" target="sistema">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="e4" value="OAuth2 login / callback" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;startArrow=open;startFill=1;endArrow=open;endFill=1;" edge="1" parent="1" source="sistema" target="google">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="e5" value="JDBC (Flyway)" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=open;endFill=1;" edge="1" parent="1" source="sistema" target="postgres">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="e6" value="Spring Data Mongo" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=open;endFill=1;" edge="1" parent="1" source="sistema" target="mongo">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

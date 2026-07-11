@@ -1,0 +1,74 @@
+<mxfile host="app.diagrams.net" agent="Claude" version="24.7.17" type="device">
+  <diagram id="clases-pokedex" name="Diagrama de Clases - Core">
+    <mxGraphModel dx="1400" dy="900" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1300" pageHeight="900" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <mxCell id="cPokemon" value="&lt;b&gt;Pokemon&lt;/b&gt;&lt;hr&gt;+ id: Long&lt;br&gt;+ nationalNumber: Integer&lt;br&gt;+ name: String&lt;br&gt;+ description: String&lt;br&gt;+ imageUrl: String&lt;br&gt;+ types: List[String]&lt;br&gt;+ region: String&lt;br&gt;+ generation: Integer&lt;br&gt;+ hasMega: Boolean&lt;br&gt;+ stats: PokemonStats" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingLeft=6;spacingRight=6;spacingTop=6;fontSize=12;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="40" y="40" width="240" height="230" as="geometry" />
+        </mxCell>
+
+        <mxCell id="cStats" value="&lt;b&gt;PokemonStats&lt;/b&gt;&lt;hr&gt;+ hp: Integer&lt;br&gt;+ attack: Integer&lt;br&gt;+ defense: Integer&lt;br&gt;+ specialAttack: Integer&lt;br&gt;+ specialDefense: Integer&lt;br&gt;+ speed: Integer&lt;hr&gt;+ getTotal(): Integer" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingLeft=6;spacingRight=6;spacingTop=6;fontSize=12;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="360" y="40" width="220" height="180" as="geometry" />
+        </mxCell>
+
+        <mxCell id="cRole" value="&lt;i&gt;&amp;laquo;enumeration&amp;raquo;&lt;/i&gt;&lt;br&gt;&lt;b&gt;Role&lt;/b&gt;&lt;hr&gt;GUEST&lt;br&gt;TRAINER&lt;br&gt;ADMIN" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingLeft=6;spacingRight=6;spacingTop=6;fontSize=12;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="40" y="330" width="160" height="110" as="geometry" />
+        </mxCell>
+
+        <mxCell id="cFilter" value="&lt;i&gt;&amp;laquo;record&amp;raquo;&lt;/i&gt;&lt;br&gt;&lt;b&gt;PokemonFilterCriteria&lt;/b&gt;&lt;hr&gt;+ type: String&lt;br&gt;+ region: String&lt;br&gt;+ generation: Integer&lt;br&gt;+ minTotalStats: Integer" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingLeft=6;spacingRight=6;spacingTop=6;fontSize=12;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+          <mxGeometry x="360" y="280" width="240" height="150" as="geometry" />
+        </mxCell>
+
+        <mxCell id="cUser" value="&lt;b&gt;User&lt;/b&gt;&lt;hr&gt;+ id: Long&lt;br&gt;+ email: String&lt;br&gt;+ username: String&lt;br&gt;+ passwordHash: String&lt;br&gt;+ role: Role&lt;br&gt;+ enabled: Boolean" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingLeft=6;spacingRight=6;spacingTop=6;fontSize=12;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="680" y="40" width="240" height="180" as="geometry" />
+        </mxCell>
+
+        <mxCell id="cFavorite" value="&lt;b&gt;Favorite&lt;/b&gt;&lt;hr&gt;+ id: Long&lt;br&gt;+ userId: Long&lt;br&gt;+ pokemonId: Long&lt;br&gt;+ addedAt: LocalDateTime" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingLeft=6;spacingRight=6;spacingTop=6;fontSize=12;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="680" y="300" width="240" height="150" as="geometry" />
+        </mxCell>
+
+        <mxCell id="cTeam" value="&lt;b&gt;Team&lt;/b&gt;&lt;hr&gt;+ id: Long&lt;br&gt;+ userId: Long&lt;br&gt;+ name: String&lt;br&gt;+ pokemonIds: List[Long]" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingLeft=6;spacingRight=6;spacingTop=6;fontSize=12;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="980" y="40" width="240" height="150" as="geometry" />
+        </mxCell>
+
+        <mxCell id="note1" value="Nota: Team y Favorite referencian a Pokemon/User solo por ID (userId, pokemonId, pokemonIds). No hay relacion de objeto ni FK a nivel de modelo de dominio (core) porque son Value Objects inmutables (@Value/@Builder) sin dependencia a JPA; la relacion real por FK vive en la capa persistence (entities)." style="rounded=1;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingLeft=6;spacingTop=6;fontSize=11;fontStyle=2;fillColor=#f5f5f5;strokeColor=#666666;dashed=1;" vertex="1" parent="1">
+          <mxGeometry x="980" y="300" width="240" height="150" as="geometry" />
+        </mxCell>
+
+        <mxCell id="e1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;startArrow=diamondThin;startFill=1;endArrow=none;" edge="1" parent="1" source="cPokemon" target="cStats">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e1l" value="1" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="e1">
+          <mxGeometry x="-0.7" relative="1" as="geometry"><mxPoint as="offset" /></mxGeometry>
+        </mxCell>
+
+        <mxCell id="e2" value="role" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=open;endFill=1;" edge="1" parent="1" source="cUser" target="cRole">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="e3" value="1        0..*" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=open;endFill=1;" edge="1" parent="1" source="cUser" target="cFavorite">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="e4" value="1        0..*" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=open;endFill=1;dashed=1;" edge="1" parent="1" source="cPokemon" target="cFavorite">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="e5" value="1        0..*" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=open;endFill=1;" edge="1" parent="1" source="cUser" target="cTeam">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="e6" value="0..*        0..6 (por id)" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=open;endFill=1;dashed=1;" edge="1" parent="1" source="cTeam" target="cPokemon">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="e7" value="filtra" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=open;endFill=0;dashed=1;" edge="1" parent="1" source="cFilter" target="cPokemon">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

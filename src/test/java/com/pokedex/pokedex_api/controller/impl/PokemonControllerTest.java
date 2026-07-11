@@ -5,6 +5,7 @@ import com.pokedex.pokedex_api.controller.dto.request.PokemonRequest;
 import com.pokedex.pokedex_api.controller.dto.response.PokemonResponse;
 import com.pokedex.pokedex_api.controller.mapper.PokemonDtoMapper;
 import com.pokedex.pokedex_api.core.model.Pokemon;
+import com.pokedex.pokedex_api.core.model.PokemonFilterCriteria;
 import com.pokedex.pokedex_api.core.service.interfaces.PokemonService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,14 +15,17 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -71,5 +75,94 @@ class PokemonControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(invalid)))
                 .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void findAll_returns200() throws Exception {
+        Pokemon pokemon = Pokemon.builder().id(1L).name("Pikachu").build();
+        PokemonResponse response = new PokemonResponse(1L, 25, "Pikachu", null, null,
+                List.of("Electric"), "Kanto", 1, false, null);
+        Page<Pokemon> page = new PageImpl<>(List.of(pokemon));
+
+        when(pokemonService.findAll(any(Pageable.class))).thenReturn(page);
+        when(mapper.toResponse(pokemon)).thenReturn(response);
+
+        mockMvc.perform(get("/v1/pokemon"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.content[0].name").value("Pikachu"));
+    }
+
+    @Test
+    void search_returns200() throws Exception {
+        Pokemon pokemon = Pokemon.builder().id(1L).name("Pikachu").build();
+        PokemonResponse response = new PokemonResponse(1L, 25, "Pikachu", null, null,
+                List.of("Electric"), "Kanto", 1, false, null);
+
+        when(pokemonService.search("pika")).thenReturn(List.of(pokemon));
+        when(mapper.toResponse(pokemon)).thenReturn(response);
+
+        mockMvc.perform(get("/v1/pokemon/search").param("query", "pika"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].name").value("Pikachu"));
+    }
+
+    @Test
+    void filterByRegion_returns200() throws Exception {
+        Pokemon pokemon = Pokemon.builder().id(1L).name("Pikachu").build();
+        PokemonResponse response = new PokemonResponse(1L, 25, "Pikachu", null, null,
+                List.of("Electric"), "Kanto", 1, false, null);
+
+        when(pokemonService.filterByCriteria(any(PokemonFilterCriteria.class))).thenReturn(List.of(pokemon));
+        when(mapper.toResponse(pokemon)).thenReturn(response);
+
+        mockMvc.perform(get("/v1/pokemon/filter").param("region", "Kanto"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].name").value("Pikachu"));
+    }
+
+    @Test
+    void create_withValidBody_returns201() throws Exception {
+        PokemonRequest request = new PokemonRequest(25, "Pikachu", "desc", null,
+                List.of("Electric"), "Kanto", 1, false, null);
+        Pokemon domain = Pokemon.builder().name("Pikachu").build();
+        Pokemon created = Pokemon.builder().id(1L).name("Pikachu").build();
+        PokemonResponse response = new PokemonResponse(1L, 25, "Pikachu", null, null,
+                List.of("Electric"), "Kanto", 1, false, null);
+
+        when(mapper.toDomain(request)).thenReturn(domain);
+        when(pokemonService.create(domain)).thenReturn(created);
+        when(mapper.toResponse(created)).thenReturn(response);
+
+        mockMvc.perform(post("/v1/pokemon")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.name").value("Pikachu"));
+    }
+
+    @Test
+    void update_returns200() throws Exception {
+        PokemonRequest request = new PokemonRequest(25, "Raichu", "desc", null,
+                List.of("Electric"), "Kanto", 1, false, null);
+        Pokemon domain = Pokemon.builder().name("Raichu").build();
+        Pokemon updated = Pokemon.builder().id(1L).name("Raichu").build();
+        PokemonResponse response = new PokemonResponse(1L, 25, "Raichu", null, null,
+                List.of("Electric"), "Kanto", 1, false, null);
+
+        when(mapper.toDomain(request)).thenReturn(domain);
+        when(pokemonService.update(1L, domain)).thenReturn(updated);
+        when(mapper.toResponse(updated)).thenReturn(response);
+
+        mockMvc.perform(put("/v1/pokemon/1")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.name").value("Raichu"));
+    }
+
+    @Test
+    void delete_returns204() throws Exception {
+        mockMvc.perform(delete("/v1/pokemon/1"))
+                .andExpect(status().isNoContent());
     }
 }

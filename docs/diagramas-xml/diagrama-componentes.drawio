@@ -1,0 +1,115 @@
+<mxfile host="app.diagrams.net" agent="Claude" version="24.7.17" type="device">
+  <diagram id="componentes-pokedex" name="Diagrama de Componentes">
+    <mxGraphModel dx="1400" dy="900" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1300" pageHeight="900" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <mxCell id="cliente" value="Cliente HTTP&lt;br&gt;(Swagger UI / Postman / App)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="440" y="20" width="280" height="60" as="geometry" />
+        </mxCell>
+
+        <mxCell id="google" value="Google OAuth2&lt;br&gt;(Identity Provider)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="900" y="20" width="200" height="60" as="geometry" />
+        </mxCell>
+
+        <mxCell id="config" value="&lt;b&gt;Config (transversal)&lt;/b&gt;&lt;hr&gt;OpenApiConfig&lt;br&gt;PersistenceConfig&lt;br&gt;PasswordEncoderConfig" style="shape=component;whiteSpace=wrap;html=1;align=left;spacingLeft=16;fillColor=#ffe6cc;strokeColor=#d79b00;" vertex="1" parent="1">
+          <mxGeometry x="20" y="330" width="280" height="110" as="geometry" />
+        </mxCell>
+
+        <mxCell id="controllers" value="&lt;b&gt;Controllers&lt;/b&gt;&lt;hr&gt;AuthController&lt;br&gt;PokemonController&lt;br&gt;FavoriteController&lt;br&gt;TeamController&lt;br&gt;GlobalExceptionHandler" style="shape=component;whiteSpace=wrap;html=1;align=left;spacingLeft=16;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="380" y="140" width="440" height="130" as="geometry" />
+        </mxCell>
+
+        <mxCell id="security" value="&lt;b&gt;Security (transversal)&lt;/b&gt;&lt;hr&gt;SecurityConfig&lt;br&gt;JwtAuthFilter&lt;br&gt;JwtService&lt;br&gt;UserDetailsServiceImpl&lt;br&gt;OAuth2SuccessHandler" style="shape=component;whiteSpace=wrap;html=1;align=left;spacingLeft=16;fillColor=#ffe6cc;strokeColor=#d79b00;" vertex="1" parent="1">
+          <mxGeometry x="880" y="140" width="320" height="150" as="geometry" />
+        </mxCell>
+
+        <mxCell id="coreservices" value="&lt;b&gt;Core - Services&lt;/b&gt;&lt;hr&gt;PokemonServiceImpl&lt;br&gt;FavoriteServiceImpl&lt;br&gt;TeamServiceImpl&lt;br&gt;UserServiceImpl&lt;br&gt;TeamValidator" style="shape=component;whiteSpace=wrap;html=1;align=left;spacingLeft=16;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="380" y="330" width="300" height="140" as="geometry" />
+        </mxCell>
+
+        <mxCell id="ports" value="&amp;laquo;interfaces&amp;raquo;&lt;br&gt;&lt;b&gt;Core - Ports&lt;/b&gt;&lt;hr&gt;PokemonPersistencePort&lt;br&gt;FavoritePersistencePort&lt;br&gt;TeamPersistencePort&lt;br&gt;UserPersistencePort" style="shape=component;whiteSpace=wrap;html=1;align=left;spacingLeft=16;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="720" y="330" width="280" height="140" as="geometry" />
+        </mxCell>
+
+        <mxCell id="adapters" value="&lt;b&gt;Persistence - Adapters&lt;/b&gt;&lt;hr&gt;PokemonPersistenceAdapter&lt;br&gt;FavoritePersistenceAdapter&lt;br&gt;TeamPersistenceAdapter&lt;br&gt;UserPersistenceAdapter&lt;br&gt;(+ Mappers MapStruct)" style="shape=component;whiteSpace=wrap;html=1;align=left;spacingLeft=16;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="380" y="520" width="300" height="140" as="geometry" />
+        </mxCell>
+
+        <mxCell id="jparepos" value="&lt;b&gt;Repositorios JPA&lt;/b&gt;&lt;hr&gt;PokemonJpaRepository&lt;br&gt;FavoriteJpaRepository&lt;br&gt;TeamJpaRepository&lt;br&gt;UserJpaRepository&lt;br&gt;TypeJpaRepository&lt;br&gt;RegionJpaRepository&lt;br&gt;PokemonStatsJpaRepository" style="shape=component;whiteSpace=wrap;html=1;align=left;spacingLeft=16;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="720" y="520" width="280" height="150" as="geometry" />
+        </mxCell>
+
+        <mxCell id="mongorepo" value="&lt;b&gt;Repositorio Mongo&lt;/b&gt;&lt;hr&gt;PokemonViewMongoRepository&lt;br&gt;&lt;i&gt;(reservado, aun sin adapter)&lt;/i&gt;" style="shape=component;whiteSpace=wrap;html=1;align=left;spacingLeft=16;fillColor=#f5f5f5;strokeColor=#666666;" vertex="1" parent="1">
+          <mxGeometry x="1040" y="330" width="220" height="100" as="geometry" />
+        </mxCell>
+
+        <mxCell id="postgres" value="PostgreSQL&lt;br&gt;(pokedex_db)" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1">
+          <mxGeometry x="740" y="720" width="160" height="90" as="geometry" />
+        </mxCell>
+
+        <mxCell id="mongo" value="MongoDB&lt;br&gt;(pokedex_stats)" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1">
+          <mxGeometry x="1080" y="720" width="160" height="90" as="geometry" />
+        </mxCell>
+
+        <mxCell id="e1" value="HTTP / JSON REST" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=open;endFill=1;" edge="1" parent="1" source="cliente" target="controllers">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="e2" value="login redirect" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=open;endFill=1;dashed=1;" edge="1" parent="1" source="cliente" target="google">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="e3" value="callback /login/oauth2/code/google" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=open;endFill=1;dashed=1;" edge="1" parent="1" source="google" target="security">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="e4" value="intercepta (JwtAuthFilter)" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=open;endFill=1;dashed=1;" edge="1" parent="1" source="security" target="controllers">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="e5" value="usa" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=open;endFill=1;" edge="1" parent="1" source="controllers" target="coreservices">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="e6" value="depende de (DIP)" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=open;endFill=1;" edge="1" parent="1" source="coreservices" target="ports">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="e7" value="usa (UserPersistencePort)" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=open;endFill=1;dashed=1;" edge="1" parent="1" source="security" target="ports">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="e8" value="implementa" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=0;dashed=1;" edge="1" parent="1" source="adapters" target="ports">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="e9" value="usa" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=open;endFill=1;" edge="1" parent="1" source="adapters" target="jparepos">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="e10" value="(futuro)" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=open;endFill=1;dashed=1;" edge="1" parent="1" source="adapters" target="mongorepo">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="e11" value="JDBC / Flyway" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=open;endFill=1;" edge="1" parent="1" source="jparepos" target="postgres">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="e12" value="Spring Data Mongo" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=open;endFill=1;" edge="1" parent="1" source="mongorepo" target="mongo">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="e13" value="configura Swagger" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=open;endFill=1;dashed=1;" edge="1" parent="1" source="config" target="controllers">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="e14" value="configura JPA/Mongo/BCrypt" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=open;endFill=1;dashed=1;" edge="1" parent="1" source="config" target="adapters">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
